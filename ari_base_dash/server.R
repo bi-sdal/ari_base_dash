@@ -15,16 +15,6 @@ shinyServer(function(input, output) {
             setView(lng = -93.85, lat = 37.45, zoom = 4)
     })
 
-    # graph_df <- reactive({
-    #   if(input$color=="less_than_high_school"||input$color=="high_school_grad"||input$color=="some_bachelors_or_associate"||input$color=="bachelors_degree_or_higher"){
-    #   d <- graph[which(graph$Variable==input$color),]
-    #   d
-    #   }else{
-    #     d <- 1
-    #     1
-    #   }
-    # })
-
     dat_surrounding_county <- reactive({
         if(input$color=="less_than_high_school"||input$color=="high_school_grad"||input$color=="some_bachelors_or_associate"||input$color=="bachelors_degree_or_higher"){
             cols <- c("less_than_high_school","high_school_grad","some_bachelors_or_associate","bachelors_degree_or_higher")
@@ -36,10 +26,10 @@ shinyServer(function(input, output) {
             cols <- c("drove_alone", "carpooled","public_transportation","walked","taxi_motorcycle_bike_other","worked_from_home")
         }else if(input$color=="never_married"||input$color=="now_married"||input$color=="separated"||input$color=="widowed"||input$color=="divorced"){
             cols <- c("never_married", "now_married","separated","walked","widowed","divorced")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native","some_other_race_alone","two_or_more_races")
         }else if(input$color=="hispanic_or_latino"){
             cols <- c("hispanic_or_latino","not_hispanic_or_latino")
         }else if(input$color=="living_with_supplementary_security_income_cash_public_assistance_income_foodstamps"||input$color=="living_without_supplementary_security_income_cash_public_assistance_income_foodstamps"){
@@ -79,8 +69,8 @@ shinyServer(function(input, output) {
             cols <- c("drove_alone", "carpooled","public_transportation","walked","taxi_motorcycle_bike_other","worked_from_home")
         }else if(input$color=="never_married"||input$color=="now_married"||input$color=="separated"||input$color=="widowed"||input$color=="divorced"){
             cols <- c("never_married", "now_married","separated","walked","widowed","divorced")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native_alone","some_other_race_alone","two_or_more_races")
         }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
             cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
         }else if(input$color=="hispanic_or_latino"){
@@ -144,10 +134,10 @@ shinyServer(function(input, output) {
             cols <- c("drove_alone", "carpooled","public_transportation","walked","taxi_motorcycle_bike_other","worked_from_home")
         }else if(input$color=="never_married"||input$color=="now_married"||input$color=="separated"||input$color=="widowed"||input$color=="divorced"){
             cols <- c("never_married", "now_married","separated","walked","widowed","divorced")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native","some_other_race_alone","two_or_more_races")
         }else if(input$color=="hispanic_or_latino"){
             cols <- c("hispanic_or_latino","not_hispanic_or_latino")
         }else if(input$color=="living_with_supplementary_security_income_cash_public_assistance_income_foodstamps"||input$color=="living_without_supplementary_security_income_cash_public_assistance_income_foodstamps"){
@@ -210,10 +200,10 @@ shinyServer(function(input, output) {
             cols <- c("drove_alone", "carpooled","public_transportation","walked","taxi_motorcycle_bike_other","worked_from_home")
         }else if(input$color=="never_married"||input$color=="now_married"||input$color=="separated"||input$color=="widowed"||input$color=="divorced"){
             cols <- c("never_married", "now_married","separated","walked","widowed","divorced")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native_alone","some_other_race_alone","two_or_more_races")
         }else if(input$color=="hispanic_or_latino"){
             cols <- c("hispanic_or_latino","not_hispanic_or_latino")
         }else if(input$color=="living_with_supplementary_security_income_cash_public_assistance_income_foodstamps"||input$color=="living_without_supplementary_security_income_cash_public_assistance_income_foodstamps"){
@@ -275,8 +265,8 @@ shinyServer(function(input, output) {
             cols <- c("drove_alone", "carpooled","public_transportation","walked","taxi_motorcycle_bike_other","worked_from_home")
         }else if(input$color=="never_married"||input$color=="now_married"||input$color=="separated"||input$color=="widowed"||input$color=="divorced"){
             cols <- c("never_married", "now_married","separated","walked","widowed","divorced")
-        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
-            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
+        }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="american_indian_and_alaskan_native_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
+            cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","american_indian_and_alaskan_native_alone","some_other_race_alone","two_or_more_races")
         }else if(input$color=="white_alone"||input$color=="black_or_african_american_alone"||input$color=="asian_alone"||input$color=="native_hawaiian_and_other_pacific_islander_alone"||input$color=="some_other_race_alone"||input$color=="two_or_more_races"){
             cols <- c("white_alone","black_or_african_american_alone","asian_alone","native_hawaiian_and_other_pacific_islander_alone","some_other_race_alone","two_or_more_races")
         }else if(input$color=="hispanic_or_latino"){
@@ -330,7 +320,11 @@ shinyServer(function(input, output) {
     })
 
     output$plot <-renderPlot({
-        colors <-c("#ff1884","#138b99","#4f9913","#154c99","#991489","#ef8b09","#ffae19")
+        #colors <-c("#ff1884","#138b99","#4f9913","#154c99","#991489","#ef8b09","#17b2a5")
+        #colors <- c("rosybrown1","paleturquoise","palegreen","palegoldenrod","orchid","plum","slateblue1")
+        #colors <- c("salmon","slateblue1","plum","seagreen2","thistle","turquoise2","yellowgreen")
+        colors <- c("#DD1349","#577590","#FFFBBD","#7FB069","#E6AA68","#326273","#64B6AC")
+        #colors <- c(rgb(114, 147, 203, maxColorValue=255),rgb(225,151,76, maxColorValue=255),rgb(132,186,91, maxColorValue=255),rgb(211,94,96, maxColorValue=255),rgb(128,133,133, maxColorValue=255),rgb(144,103,167, maxColorValue=255),rgb(171,104,87, maxColorValue=255),rgb(204,194,16, maxColorValue=255))
         if(input$plots=="Surrounding County"){
             #call reactive dataset
             d <- dat_surrounding_county()

@@ -6,6 +6,8 @@ data <- rio::import('/home/aerogers/git/ari_base_char/data/ari_base_char/working
 base_df <- rio::import('/home/aerogers/git/ari_base_char/data/ari_base_char/original/base_df.csv')
 county <-read.csv('/home/sdal/projects/ari_base_char/final/ACS_data_county.csv')
 df_big <- read.csv('/home/sdal/projects/ari_base_char/final/ACS_data_zctas.csv')
+
+
   #read.csv('/home/git/ari_base_char/src/aerogers/Graph_Data-Sheet1.csv')
 #source('~/git/ari_base_char/Exploratory_Analysis/Functions.R')
 

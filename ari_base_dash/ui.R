@@ -27,6 +27,7 @@ vars <- c(
     "Percent Black/African American" = "black_or_african_american_alone",
     "Percent Asian" = "asian_alone",
     "Percent Native Hawaiian or Pacifica Islander" = "native_hawaiian_and_other_pacific_islander_alone",
+    "Percent American Indian"="american_indian_and_alaskan_native_alone",
     "Percent Other Race" = "some_other_race_alone",
     "Percent Two or More Races" = "two_or_more_races",
     "Percent Hispanic or Latino" = "hispanic_or_latino",
