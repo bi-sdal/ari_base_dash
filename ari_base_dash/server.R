@@ -25,7 +25,7 @@ shinyServer(function(input, output) {
     #   }
     # })
 
-    dat <- reactive({
+    dat_surrounding_county <- reactive({
         if(input$color=="less_than_high_school"||input$color=="high_school_grad"||input$color=="some_bachelors_or_associate"||input$color=="bachelors_degree_or_higher"){
             cols <- c("less_than_high_school","high_school_grad","some_bachelors_or_associate","bachelors_degree_or_higher")
         }else if(input$color=="with_children_under_18"||input$color=="without_children_under_18"){
@@ -68,7 +68,7 @@ shinyServer(function(input, output) {
         combine
     })
 
-    dat2 <- reactive({
+    dat_selected_large_bases <- reactive({
         if(input$color=="less_than_high_school"||input$color=="high_school_grad"||input$color=="some_bachelors_or_associate"||input$color=="bachelors_degree_or_higher"){
             cols <- c("less_than_high_school","high_school_grad","some_bachelors_or_associate","bachelors_degree_or_higher")
         }else if(input$color=="with_children_under_18"||input$color=="without_children_under_18"){
@@ -333,7 +333,7 @@ shinyServer(function(input, output) {
         colors <-c("#ff1884","#138b99","#4f9913","#154c99","#991489","#ef8b09","#ffae19")
         if(input$plots=="Surrounding County"){
             #call reactive dataset
-            d <-dat()
+            d <- dat_surrounding_county()
             group.colors=colors[1:(nrow(d)/2)]
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_bar(aes(fill=group), alpha=.8,stat="identity")+
@@ -345,7 +345,7 @@ shinyServer(function(input, output) {
                 ylab("Percent Of Population")+xlab("Location")+
                 theme(plot.title=element_text(size=11, face="bold"), axis.title=element_text(size=10))+coord_cartesian(ylim=c(0,1))
         }else if(input$plots=="Selected Large Bases (population > 50,000)"){
-            d <- dat2()
+            d <- dat_selected_large_bases()
             group.colors=colors[1:(nrow(d)/2)]
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_rect(xmin=1-.45, xmax=1+.45,ymin=-.1,ymax=1.1, fill=rgb(145, 154, 158,maxColorValue = 255))+
