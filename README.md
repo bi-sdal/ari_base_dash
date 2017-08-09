@@ -1,6 +1,9 @@
 # Army Research Institute Base Characteristics Dashboard
 
-An example of the running application can be found here: https://chendaniely.shinyapps.io/ari_base_dash/
+An example of the running application can be found here:
+
+- https://aerogers.shinyapps.io/ari_base_dash/
+- https://chendaniely.shinyapps.io/ari_base_dash/
 
 # Developer's Notes
 
