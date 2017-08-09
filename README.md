@@ -1,5 +1,7 @@
 # Army Research Institute Base Characteristics Dashboard
 
+An example of the running application can be found here: https://chendaniely.shinyapps.io/ari_base_dash/
+
 # Developer's Notes
 
 Since this project is on both gitlab and github please set the remotes such that a push command is automatically pushed into 2 locations
