@@ -29,9 +29,11 @@ https://shiny.rstudio.com/gallery/superzip-example.html
 For more instructions and video tutorials: https://shiny.rstudio.com/tutorial/
 
 ####Vocabulary
-Server: where code for points and graphs is edited
-UI: where the user interface is edited
-Global: where datasets are loaded in
+**Server**: where code for points and graphs is edited
+
+**UI**: where the user interface is edited
+
+**Global**: stores packages, objects, data to be used across both Server.R and UI.R files
 
 ###Server Instructions 
 ####Map
