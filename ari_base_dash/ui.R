@@ -1,6 +1,7 @@
 library(leaflet)
 
 # Choices for drop-downs
+# format in list:  "Name to Appear on Dashboard" = "variable_name_in_dataset",
 vars <- c(
     "Percent With Less Than High School Diploma" = "less_than_high_school",
     "Percent With Only High School Diplomas" = "high_school_grad",
@@ -159,18 +160,20 @@ navbarPage(
             ),
 
             leafletOutput("map", width = "100%", height = "100%"),
-
+            #creates panel
             absolutePanel(
                 id = "controls",class = "panel panel-default", fixed = TRUE,
                 draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
                 width = 400, height = 1000,
 
+                #title dropdown
                 h2("Army Installation Explorer"),
 
+                #create dropdown menus
                 selectInput("color", "Color", vars),
 
                 selectInput("location", "Location", vars2),
-
+                #create radio buttons
                 radioButtons(
                     "plots", "Compare To:",
                     c("Surrounding County",
@@ -188,7 +191,7 @@ navbarPage(
                 plotOutput("plot", height = c(400))
                 #plotOutput("scatterCollegeIncome", height = 250)
             ), # this is the end to the absolutePanel
-
+            #create text citation
             tags$div(
                 id = "cite",
                 '------------------------------------Data Source:',

@@ -1,9 +1,11 @@
+#load in libraries
 library(shiny)
 library(leaflet)
 library(ggplot2)
 library(htmltools)
 library(DT)
 
+#Import functioning maps and plots to app
 shinyServer(function(input, output) {
     #create map
     output$map <- renderLeaflet({
@@ -14,8 +16,11 @@ shinyServer(function(input, output) {
             ) %>%
             setView(lng = -93.85, lat = 37.45, zoom = 4)
     })
-
+#data comparing to surrounding county
     dat_surrounding_county <- reactive({
+        #input should be (input$color == 'ACS Variable of choice'||input$color == 'other ACS Variable of choice')
+        #color is refering to the color input on the UI.R file. In this case, color is a selected ACS Variable.
+        #cols is assigning column names for data calling below
         if(input$color=="less_than_high_school"||input$color=="high_school_grad"||input$color=="some_bachelors_or_associate"||input$color=="bachelors_degree_or_higher"){
             cols <- c("less_than_high_school","high_school_grad","some_bachelors_or_associate","bachelors_degree_or_higher")
         }else if(input$color=="with_children_under_18"||input$color=="without_children_under_18"){
@@ -44,11 +49,17 @@ shinyServer(function(input, output) {
             cols <- c("armed_forces")
         }
 
-        base = df[which(df$base==input$location),]
+        #pull row associated with interested base
+        base = df[which(df$base==input$location),]#location is refering to the 'location' input specified on the UI.R file
+        #combine average with columns of base data
         data = cbind("base average", base[,cols]) # base[, cols]
+        #specify column names
         colnames(data) <- c("location",cols)
+        #create dataframe
         data_df <- as.data.frame(data)
+        #transform data into 3 columns with location, value and group(former column headers)
         data.new <- tidyr::gather(data_df, group, y, -location)
+        #repeat with county dataset
         county_av= county[which(county$base==input$location),]
         data2 = cbind("county average", county_av[,cols])
         colnames(data2) <- c("location",cols)
@@ -59,6 +70,7 @@ shinyServer(function(input, output) {
     })
 
     dat_selected_large_bases <- reactive({
+        #call columns
         if(input$color=="less_than_high_school"||input$color=="high_school_grad"||input$color=="some_bachelors_or_associate"||input$color=="bachelors_degree_or_higher"){
             cols <- c("less_than_high_school","high_school_grad","some_bachelors_or_associate","bachelors_degree_or_higher")
         }else if(input$color=="with_children_under_18"||input$color=="without_children_under_18"){
@@ -89,7 +101,8 @@ shinyServer(function(input, output) {
             cols <- c("armed_forces")
         }
 
-
+        #specify conditions for preselected bases
+        #if one of preselected bases is selected, it will not be called again in the data
         if(input$location=="Fort Lewis"){
             base_data = df[which(df$base==input$location|df$base=="Fort Knox"|df$base=="Tripler AMC"|df$base=="Helemano Military Reservation"|df$base=="Fort Hood"),]
         }else if(input$location=="Fort Knox"){
@@ -219,8 +232,6 @@ shinyServer(function(input, output) {
         }else if(input$color=="armed_forces"){
             cols <- c("armed_forces")
         }
-
-
         if(input$location=="Detroit Arsenal"){
             base_data = df[which(df$base==input$location|df$base=="Presidio Of Monterey"|df$base=="Umatilla Chem Depot"|df$base=="Carlisle Barracks"|df$base=="Stewart Annex"),]
         }else if(input$location=="Presidio Of Monterey"){
@@ -320,15 +331,15 @@ shinyServer(function(input, output) {
     })
 
     output$plot <-renderPlot({
-        #colors <-c("#ff1884","#138b99","#4f9913","#154c99","#991489","#ef8b09","#17b2a5")
-        #colors <- c("rosybrown1","paleturquoise","palegreen","palegoldenrod","orchid","plum","slateblue1")
-        #colors <- c("salmon","slateblue1","plum","seagreen2","thistle","turquoise2","yellowgreen")
+        #select colors, list max number of colors needed
         colors <- c("#DD1349","#577590","#FFFBBD","#7FB069","#E6AA68","#326273","#64B6AC")
-        #colors <- c(rgb(114, 147, 203, maxColorValue=255),rgb(225,151,76, maxColorValue=255),rgb(132,186,91, maxColorValue=255),rgb(211,94,96, maxColorValue=255),rgb(128,133,133, maxColorValue=255),rgb(144,103,167, maxColorValue=255),rgb(171,104,87, maxColorValue=255),rgb(204,194,16, maxColorValue=255))
+        #put type of plot selection from radio buttonsin if()else if() statements
         if(input$plots=="Surrounding County"){
-            #call reactive dataset
+            #call corresponding reactive dataset
             d <- dat_surrounding_county()
+            #specify the number of colors that will be needed from color set
             group.colors=colors[1:(nrow(d)/2)]
+            #create stacked bar plot comparing base average to surrounding county average
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_bar(aes(fill=group), alpha=.8,stat="identity")+
                 labs(title="County Average to Army Installation Average")+
@@ -341,6 +352,7 @@ shinyServer(function(input, output) {
         }else if(input$plots=="Selected Large Bases (population > 50,000)"){
             d <- dat_selected_large_bases()
             group.colors=colors[1:(nrow(d)/2)]
+            #create plot comparing base averages to selected large bases of randomly selected bases of population 50,000 or greater
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_rect(xmin=1-.45, xmax=1+.45,ymin=-.1,ymax=1.1, fill=rgb(145, 154, 158,maxColorValue = 255))+
                 geom_bar(aes(fill=group), alpha=.8,stat="identity")+
@@ -355,6 +367,7 @@ shinyServer(function(input, output) {
         else if(input$plots=="Selected Medium-Large Bases (population 25,000- 50,000)"){
             d <- dat3()
             group.colors=colors[1:(nrow(d)/2)]
+            #create plot comparing base averages to selected medium-large bases of randomly selected bases of population 25,000-50,000
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_rect(xmin=1-.45, xmax=1+.45,ymin=-.1,ymax=1.1, fill=rgb(145, 154, 158,maxColorValue = 255))+
                 geom_bar(aes(fill=group), alpha=.8,stat="identity")+
@@ -369,6 +382,7 @@ shinyServer(function(input, output) {
         else if(input$plots=="Selected Medium-Small Bases (population 10,000-25,000)"){
             d <- dat4()
             group.colors=colors[1:(nrow(d)/2)]
+            #create plot comparing base averages to selected medium-small bases of randomly selected bases of population 10,000-25,000
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_rect(xmin=1-.45, xmax=1+.45,ymin=-.1,ymax=1.1, fill=rgb(145, 154, 158,maxColorValue = 255))+
                 geom_bar(aes(fill=group), alpha=.8,stat="identity")+
@@ -382,6 +396,7 @@ shinyServer(function(input, output) {
         }else if(input$plots=="Selected Small Bases (population < 10,000)"){
             d <- dat5()
             group.colors=colors[1:(nrow(d)/2)]
+            #create plot comparing base averages to selected small bases of randomly selected bases of population 10,000 or less
             ggplot(d, aes(x=location, y=as.numeric(as.character(y))))+
                 geom_rect(xmin=1-.45, xmax=1+.45,ymin=-.1,ymax=1.1, fill=rgb(145, 154, 158,maxColorValue = 255))+
                 geom_bar(aes(fill=group), alpha=.8,stat="identity")+
@@ -397,23 +412,29 @@ shinyServer(function(input, output) {
 
 
     observe({
+        #connect to UI.R color selector
         colorBy <- input$color
-
+        #put data into dataframe
         colorData <- df[[colorBy]]
+        #make color legend change based on color data
         colorRange <- c( floor( min(colorData)/.1)*.1, ceiling(max(colorData/.1))*.1 )
         colorSeq <- round( seq(colorRange[1],colorRange[2],length=9), 2 )
+        #assign pallette
         cbbPalette <- c("#ffbfd0","#ff93b0","#ef6e90","#e23865","#dd1349","#db003a","#ce0238","#9e0029","#72001d","#4f0014")
         pal <- colorBin(cbbPalette, colorData, colorSeq, pretty = TRUE)
 
         leafletProxy("map", data = df) %>%
             clearShapes() %>%
+            #add dots to map
             addCircleMarkers(~long, ~lat, radius=df$population^(1/4), layerId=~base,popup=~htmlEscape(df$base),
                              stroke=FALSE, fillOpacity=0.6, fillColor=pal(colorData)) %>%
+            #add legend to bottom left corner
             addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                       layerId="colorLegend")
 
     })
 
+    #adds data to DataTable
     output$tbl = DT::renderDataTable(
         df, options = list(lengthChange = FALSE))
 

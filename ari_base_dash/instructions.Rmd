@@ -1,0 +1,157 @@
+---
+title: "Dashboard Instructions"
+date: "August 2017"
+output:
+  html_document:
+    toc: true
+    theme: simplex
+---
+
+###Description
+
+The ARI Dashboard is a tool to explore the demographic trends across U.S. Army Installations in the 50 states. The dashboard is a combination of two types of data analysis. A cross country scatter plot with dots sized by population and colored by differing ACS Variables. And, comparison stacked bar charts that compare social, economic and demographic distributions of specific bases to surrounding counties and other bases. 
+
+Found on Github: https://github.com/bi-sdal/ari_base_dash
+
+Code based on: ‘Shiny-Superzip Example’ 
+https://shiny.rstudio.com/gallery/superzip-example.html
+
+###Necessary R Packages
+* shiny
+* leaflet
+* ggplot2
+* htmltools
+* DT
+* rio
+* dplyr
+
+###Shiny Tutorials
+For more instructions and video tutorials: https://shiny.rstudio.com/tutorial/
+
+####Vocabulary
+Server: where code for points and graphs is edited
+UI: where the user interface is edited
+Global: where datasets are loaded in
+
+###Server Instructions 
+####Map
+*starts at line 9*
+Created in **renderLeaflet()** object.
+
+The Map is powered by Leaflet. Leaflet is an open-source JavaScript library for interactive maps. Details found here: https://rstudio.github.io/leaflet/
+
+#####Circle Markers
+*starting at line 414*
+Created in **observe()** object.
+
+Circle Markers are leaflet objects. They can change size and 
+
+ Color is connected to UI.R with colorBy<-input$color
+ 
+ Color pallette is defined as cbbPalette
+ 
+ To create objects on map use: leafletProxy(“map”, data=df) %>% clearShapes() %>% ...
+    
+* addCircleMarkers() *adds the dots*
+    + Radius is currently set at population^1/4. Can be edited to be reactive by adding an input$size variable to the UI.R.
+    + fillColor is set to definted color pallete above.
+    + Pop is assigned using ~htmlEscape(df$base)
+* addLegend *puts legend on bottom left corner*
+    + specify location, i.e. "bottomleft"
+    + the color and palette data is the same as data for circleMarkers
+    
+####Plots
+There are five types of stacked barplots on the dashboard output. They are:
+
+1. Comparing base averages to surrounding county averages
+2. Comparing base averages to preselected large bases (pop >50,000)
+3. Comparing base averages to preselected medium-large bases (pop 25-000-50,000)
+4. Comparing base averages to preselected medium-small bases (pop 10-000-25,000)
+5. Comparing base averages to preselected small bases (pop <10,000)
+
+#####Preparing Data
+*starting line 20*
+Datasets are set up in a **reactive()** object
+
+Data is called from **‘data/server_data/ACS_data_base.csv’** assigned as **‘df’** in **global.R**
+
+*   To call columns (ACS Variables) from the data set use input$color 
+        +   Calling columns must be done manually in a series of if()else if() statements.
+*   To call rows(Bases) is called using input$location
+*   Gather data using tidyr::gather() to format data for plotting
+*   For datasets for plots using preselected bases, conditions are put in so that the data when these locations are selected do not duplicate data
+
+#####Plotting
+*starting line 333*
+Plots are set up using **renderPlot()**
+
+Colors are selected using HTML colors. Input max number of colors to begin with.
+
+To have changing plots use a series of if()else if() statements with input$plots (connecting to radio buttons defined in UI.R)
+
+####Data Explorer
+
+Simple command on *line 438* assigning data to datatable. Looking at the Superzip example you can add in more options to make the datatable more interactive. 
+
+###UI Instructions
+
+####Interactive Panel
+
+Movable panel is made using absolutePanel(). Width and Height can be reset if necessary.
+
+#####Creating Drop Downs
+Allows you to type and search and scroll through list of varaibles to change dots and plots. 
+This is used for dot coloration and base location
+
+* assign variables for drop downs in list. Entries should look like:  
+    + **"Name on Dashboard List" = "variable_name_in_dataset"**
+    
+* create actual dropdown using command: **selectInput("input_name", "Input_Name", variables)**
+
+#####Creating Radio Buttons
+This is used to pick the type of comparison plots shown on dashboard
+
+*   Command: **radioButtons("input_name", "Title","c(selective list,)")**
+
+#####Plot Output
+This displays the plots made in Server.R
+
+*   Command: **plotOutput("assigned_plot_name", height=)**
+
+####Citation
+Citation or other text on dashboard can be made useing
+
+*   Command: **tags$ div(id='cite', 'title', tags$em('Source'),"More Info")**
+
+####Data Table
+Creates a new tab for data to be viewed by user
+
+* Command : **tabPanel("Title",fluidRow(DT::dataTableOutput('tbl')))**
+
+###Global Instructions
+
+The Global page is used to store data and packages used throughout your app. 
+
+Assign data to variables as you would in R. Can use these varaibles for both UI.R and Server.R pages. 
+The Global 
+
+###Future Work Potential
+
+####Some Notes Regarding Easy Upgrades: 
+
+*   Add a dropdown to change size of points
+
+```{r, message=FALSE}
+#selectInput("size", "Size", vars3)
+```
+
+*   Add BLS data 
+    +   add state shp file level and new input
+
+*   Create More interactive PopUp
+    +   example available in SuperZip Example
+    
+*   Create Interactive Data Explorer
+    +   SuperZip Example allows you to click on data and go to point on Map
+    
+*   Create some way to generate report of each base
